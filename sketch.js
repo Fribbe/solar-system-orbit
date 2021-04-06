@@ -2,6 +2,7 @@ let planetTextures = [];
 let planets = [];
 let parsed;
 let sun;
+let bg;
 
 let guiControls = new (function () {
 	this.animationSpeed = 1;
@@ -36,12 +37,18 @@ function setup() {
 
 function preload() {
 	parsed = loadJSON("./data.json");
+	bg = loadImage("./8k_stars.jpg");
 }
 
 function draw() {
-	background(51);
+	background(0);
+	push();
+	fill(255);
+	texture(bg);
+	sphere(2000);
+	pop();
 	//pointLight(255, 255, 255, 0, -500, 0);
-	orbitControl(2);
+	orbitControl();
 	createGrid();
 	createTrajectory();
 	sun.display();
@@ -52,19 +59,29 @@ function draw() {
 }
 
 function createGrid() {
-	stroke(255, 25);
-
-	for (let i = -100; i <= 100; i += 20) {
-		line(i, 0, 120, i, 0, -120);
-		line(120, 0, i, -120, 0, i);
+	push();
+	stroke(20, 20);
+	let r = 1000;
+	let angle = 20;
+	for (let i = 0; i < 360; i += angle) {
+		let x = r * cos(radians(i));
+		let z = r * sin(radians(i));
+		line(0, 50, 0, x, 50, z);
 	}
+	noFill();
+	translate(0, 50, 0);
+	rotateX(PI / 2);
+	for (let i = 0; i < 1000; i += 200) {
+		circle(0, 0, i * 2);
+	}
+	pop();
 }
 
 function createTrajectory() {
 	for (let i = 1; i < planets.length; i++) {
 		let diff = planets[i].farthestPoint - planets[i].semiMajorAxis;
 		push();
-		stroke(255, 25);
+		stroke(55, 255);
 		noFill();
 		rotateX(PI / 2);
 		ellipse(diff, 0, 2 * planets[i].semiMajorAxis, 2 * planets[i].semiMinorAxis, 30);
