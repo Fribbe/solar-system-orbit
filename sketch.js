@@ -88,3 +88,7 @@ function createTrajectory() {
 		pop();
 	}
 }
+
+function windowResized() {
+	resizeCanvas(windowWidth, windowHeight);
+}
