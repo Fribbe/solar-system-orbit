@@ -1,0 +1,30 @@
+{
+	"sun": {
+		"radius": 6.9634,
+		"semiMajorAxis": 0,
+		"farthestPoint": 0,
+		"nearestPoint": 0,
+		"eccentricity": 0
+	},
+	"mercury": {
+		"radius": 2.439,
+		"semiMajorAxis": 57.90905,
+		"farthestPoint": 69.8169,
+		"nearestPoint": 46.0012,
+		"eccentricity": 0.20563
+	},
+	"venus": {
+		"radius": 6.051,
+		"semiMajorAxis": 108.208,
+		"farthestPoint": 108.939,
+		"nearestPoint": 107.477,
+		"eccentricity": 0.006772
+	},
+	"earth": {
+		"radius": 6.371,
+		"semiMajorAxis": 149.598023,
+		"farthestPoint": 152.1,
+		"nearestPoint": 147.095,
+		"eccentricity": 0.0167086
+	}
+}

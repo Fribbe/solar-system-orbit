@@ -51,7 +51,8 @@ class Planet {
 
 		push();
 		noStroke();
-		ambientMaterial(255);
+		//ambientMaterial(255);
+		//texture(this.texture);
 		translate(this.x, 0, this.y);
 		sphere(this.planetRadius);
 		pop();
