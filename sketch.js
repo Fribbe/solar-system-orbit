@@ -60,7 +60,7 @@ function draw() {
 
 function createGrid() {
 	push();
-	stroke(20, 20);
+	stroke(50, 50);
 	let r = 1000;
 	let angle = 20;
 	for (let i = 0; i < 360; i += angle) {
