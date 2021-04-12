@@ -3,28 +3,34 @@ let planets = [];
 let parsed;
 let sun;
 let bg;
+const PLANET_RADIUS_SCALE = 10e-4;
+const ORBIT_DISTANCE_SCALE = 10e-7;
 
 let guiControls = new (function () {
 	this.animationSpeed = 1;
+	this.drawOrbit = true;
+	this.orbitStroke = 50;
 })();
+
+function guiSetup() {
+	let gui = new dat.GUI();
+	gui.add(guiControls, "animationSpeed", 0, 10);
+	gui.add(guiControls, "drawOrbit");
+	gui.add(guiControls, "orbitStroke", 0, 255);
+}
 
 function createPlanets(data) {
 	for (entry in data) {
 		let planet = data[entry];
 		let tmp = new Planet(
-			planet.radius,
-			planet.farthestPoint,
-			planet.nearestPoint,
-			planet.semiMajorAxis,
+			planet.radius * PLANET_RADIUS_SCALE,
+			planet.farthestPoint * ORBIT_DISTANCE_SCALE,
+			planet.nearestPoint * ORBIT_DISTANCE_SCALE,
+			planet.semiMajorAxis * ORBIT_DISTANCE_SCALE,
 			planet.eccentricity
 		);
 		planets.push(tmp);
 	}
-}
-
-function guiSetup() {
-	let gui = new dat.GUI();
-	gui.add(guiControls, "animationSpeed", 0, 10);
 }
 
 function setup() {
@@ -42,15 +48,17 @@ function preload() {
 
 function draw() {
 	background(0);
-	push();
+	/* 	push();
 	fill(255);
 	texture(bg);
 	sphere(2000);
-	pop();
+	pop(); */
 	//pointLight(255, 255, 255, 0, -500, 0);
 	orbitControl();
 	createGrid();
-	createTrajectory();
+	if (guiControls.drawOrbit) {
+		drawOrbit();
+	}
 	sun.display();
 	for (let i = 1; i < planets.length; i++) {
 		planets[i].orbit(sun);
@@ -77,11 +85,11 @@ function createGrid() {
 	pop();
 }
 
-function createTrajectory() {
+function drawOrbit() {
 	for (let i = 1; i < planets.length; i++) {
 		let diff = planets[i].farthestPoint - planets[i].semiMajorAxis;
 		push();
-		stroke(55, 255);
+		stroke(guiControls.orbitStroke, 255);
 		noFill();
 		rotateX(PI / 2);
 		ellipse(diff, 0, 2 * planets[i].semiMajorAxis, 2 * planets[i].semiMinorAxis, 30);
