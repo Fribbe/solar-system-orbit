@@ -1,41 +1,39 @@
 {
-	"sun": {
-		"radius": 6963.4,
-		"semiMajorAxis": 0,
-		"farthestPoint": 0,
-		"nearestPoint": 0,
-		"eccentricity": 0
-	},
-	"mercury": {
+	"Mercury": {
+		"mass": 0.3285,
 		"radius": 2439,
 		"semiMajorAxis": 57909050,
 		"farthestPoint": 69816900,
 		"nearestPoint": 46001200,
 		"eccentricity": 0.20563
 	},
-	"venus": {
+	"Venus": {
+		"mass": 4.867,
 		"radius": 6051,
 		"semiMajorAxis": 108208000,
 		"farthestPoint": 108939000,
 		"nearestPoint": 107477000,
 		"eccentricity": 0.006772
 	},
-	"earth": {
+	"Earth": {
+		"mass": 5.972,
 		"radius": 6371.0,
 		"semiMajorAxis": 149598023,
 		"farthestPoint": 152100000,
 		"nearestPoint": 147095000,
 		"eccentricity": 0.0167086
 	},
-	"mars": {
+	"Mars": {
+		"mass": 0.639,
 		"radius": 3389.5,
 		"semiMajorAxis": 227939200,
 		"farthestPoint": 249200000,
 		"nearestPoint": 206700000,
 		"eccentricity": 0.0934
 	},
-	"jupiter": {
-		"radius": 3389.5,
+	"Jupiter": {
+		"mass": 1898,
+		"radius": 6991.1,
 		"semiMajorAxis": 778570000,
 		"farthestPoint": 816620000,
 		"nearestPoint": 740520000,

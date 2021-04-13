@@ -1,44 +1,14 @@
-let planetTextures = [];
-let planets = [];
 let parsed;
 let sun;
 let bg;
-const PLANET_RADIUS_SCALE = 10e-4;
-const ORBIT_DISTANCE_SCALE = 10e-7;
-
-let guiControls = new (function () {
-	this.animationSpeed = 1;
-	this.drawOrbit = true;
-	this.orbitStroke = 50;
-})();
-
-function guiSetup() {
-	let gui = new dat.GUI();
-	gui.add(guiControls, "animationSpeed", 0, 10);
-	gui.add(guiControls, "drawOrbit");
-	gui.add(guiControls, "orbitStroke", 0, 255);
-}
-
-function createPlanets(data) {
-	for (entry in data) {
-		let planet = data[entry];
-		let tmp = new Planet(
-			planet.radius * PLANET_RADIUS_SCALE,
-			planet.farthestPoint * ORBIT_DISTANCE_SCALE,
-			planet.nearestPoint * ORBIT_DISTANCE_SCALE,
-			planet.semiMajorAxis * ORBIT_DISTANCE_SCALE,
-			planet.eccentricity
-		);
-		planets.push(tmp);
-	}
-}
+let cnv;
 
 function setup() {
-	createCanvas(windowWidth, windowHeight, WEBGL);
+	cnv = createCanvas(windowWidth, windowHeight, WEBGL);
+	cnv.mouseWheel(zoom);
 	guiSetup();
 	createPlanets(parsed);
-
-	sun = planets[0];
+	sun = new Sun(69634 * 0.0002, 0, 0, 0);
 }
 
 function preload() {
@@ -48,52 +18,37 @@ function preload() {
 
 function draw() {
 	background(0);
-	/* 	push();
+	push();
 	fill(255);
 	texture(bg);
 	sphere(2000);
-	pop(); */
-	//pointLight(255, 255, 255, 0, -500, 0);
-	orbitControl();
-	createGrid();
+	pop();
+	orbitControl(1, 1, 0);
 	if (guiControls.drawOrbit) {
 		drawOrbit();
 	}
 	sun.display();
-	for (let i = 1; i < planets.length; i++) {
+	if (guiControls.enableLighting) {
+		pointLight(255, 255, 255, 0, 0, 0);
+	}
+	createGrid();
+	for (let i = 0; i < planets.length; i++) {
 		planets[i].orbit(sun);
 		planets[i].display();
+		if (guiControls.drawTrajectory) {
+			planets[i].drawTrajectory();
+		}
 	}
 }
 
-function createGrid() {
-	push();
-	stroke(50, 50);
-	let r = 1000;
-	let angle = 20;
-	for (let i = 0; i < 360; i += angle) {
-		let x = r * cos(radians(i));
-		let z = r * sin(radians(i));
-		line(0, 50, 0, x, 50, z);
-	}
-	noFill();
-	translate(0, 50, 0);
-	rotateX(PI / 2);
-	for (let i = 0; i < 1000; i += 200) {
-		circle(0, 0, i * 2);
-	}
-	pop();
-}
-
-function drawOrbit() {
-	for (let i = 1; i < planets.length; i++) {
-		let diff = planets[i].farthestPoint - planets[i].semiMajorAxis;
-		push();
-		stroke(guiControls.orbitStroke, 255);
-		noFill();
-		rotateX(PI / 2);
-		ellipse(diff, 0, 2 * planets[i].semiMajorAxis, 2 * planets[i].semiMinorAxis, 30);
-		pop();
+function zoom(event) {
+	// zoom according to direction of mouseWheelDeltaY rather than value
+	let sensitivityZoom = 0.08;
+	let scaleFactor = cnv.height;
+	if (event.deltaY > 0) {
+		cnv._curCamera._orbit(0, 0, sensitivityZoom * scaleFactor);
+	} else {
+		cnv._curCamera._orbit(0, 0, -sensitivityZoom * scaleFactor);
 	}
 }
 
